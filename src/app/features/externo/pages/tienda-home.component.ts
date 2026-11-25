@@ -151,7 +151,7 @@ import { Categoria, Cliente, Producto, VentaResponse } from '../../../core/model
                 <div class="col-6 col-md-4 col-lg-3">
                   <div class="prod-card-cliente h-100 d-flex flex-column">
                     <div class="prod-img-wrap position-relative">
-                      <img [src]="p.imagenUrl || 'https://placehold.co/400x300/f8fafc/94a3b8?text=Minimarket+Pool'"
+                      <img [src]="obtenerImagen(p)"
                            [alt]="p.nombre" loading="lazy"
                            onerror="this.src='https://placehold.co/400x300/f8fafc/94a3b8?text=Minimarket+Pool'">
                       <span class="prod-cat-badge">{{ p.categoriaNombre || 'General' }}</span>
@@ -477,8 +477,30 @@ export class TiendaHomeComponent implements OnInit {
   }
 
   clickAgregarAlCarrito(p: Producto) {
-    // Cualquier cliente puede ver el catálogo y añadir al carrito; para pagar se requerirá cuenta
+    if (!this.authService.isLoggedIn()) {
+      this.toastService.warning('Acceso Requerido', 'Para usar el carrito es necesario que inicie sesión o se registre.');
+      this.carritoService.solicitarCuentaParaComprar(p);
+      return;
+    }
     this.carritoService.agregar(p);
+  }
+
+  obtenerImagen(p: Producto): string {
+    if (p.imagenUrl && !p.imagenUrl.includes('images.unsplash.com')) {
+      return p.imagenUrl;
+    }
+    const cat = (p.categoriaNombre || 'General').toLowerCase();
+    const bg = cat.includes('lácteos') ? 'e0f2fe/0284c7' :
+               cat.includes('bebidas') ? 'fef3c7/d97706' :
+               cat.includes('abarrotes') ? 'fef2f2/dc2626' :
+               cat.includes('snack') ? 'ffedd5/ea580c' :
+               cat.includes('golosina') ? 'fdf4ff/c026d3' :
+               cat.includes('panadería') ? 'fefce8/ca8a04' :
+               cat.includes('limpieza') ? 'ecfdf5/059669' :
+               cat.includes('cuidado') ? 'f0fdfa/0d9488' :
+               cat.includes('conservas') ? 'eff6ff/2563eb' : 'f1f5f9/475569';
+    const texto = encodeURIComponent(p.nombre.length > 24 ? p.nombre.substring(0, 21) + '...' : p.nombre);
+    return `https://placehold.co/400x300/${bg}?text=${texto}&font=roboto`;
   }
 
   abrirModalAuth(tab: 'login' | 'registro') {

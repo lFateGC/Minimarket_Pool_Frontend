@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { CarritoService } from '../../../core/services/carrito.service';
+import { ToastService } from '../../../core/services/toast.service';
 import { Categoria } from '../../../core/models';
 
 @Component({
@@ -41,7 +42,7 @@ import { Categoria } from '../../../core/models';
         <div class="d-flex align-items-center gap-2 order-2 order-md-3">
           <!-- Carrito de Compras Siempre Visible -->
           <button class="btn btn-warning position-relative fw-bold text-dark rounded-pill px-3 py-2 shadow-sm d-flex align-items-center gap-2"
-                  (click)="carritoService.abrirOffcanvas()">
+                  (click)="clickCarrito()">
             <i class="bi bi-cart3 fs-5"></i>
             <span class="d-none d-sm-inline">Carrito</span>
             <span class="badge bg-danger text-white rounded-pill ms-1">{{ carritoService.totalItems() }}</span>
@@ -412,6 +413,7 @@ import { Categoria } from '../../../core/models';
 export class NavbarClienteComponent {
   public authService = inject(AuthService);
   public carritoService = inject(CarritoService);
+  private toastService = inject(ToastService);
 
   @Input() categorias: Categoria[] = [];
 
@@ -426,6 +428,15 @@ export class NavbarClienteComponent {
   acordeonCategoriasAbierto = false;
   acordeonInternoAbierto = false;
   acordeonContactoAbierto = false;
+
+  clickCarrito() {
+    if (!this.authService.isLoggedIn()) {
+      this.toastService.warning('Acceso Requerido', 'Para usar el carrito de compras es necesario iniciar sesión o registrarse.');
+      this.abrirLogin.emit('login');
+      return;
+    }
+    this.carritoService.abrirOffcanvas();
+  }
 
   alBuscar(e: Event) {
     const valor = (e.target as HTMLInputElement).value;

@@ -16,7 +16,7 @@ import { CarritoService } from '../../../core/services/carrito.service';
             <div class="modal-header border-0 bg-danger text-white py-3 px-4 position-relative">
               <div class="d-flex align-items-center gap-2">
                 <i class="bi bi-person-lock fs-4 text-warning"></i>
-                <h6 class="modal-title fw-bold mb-0">Cuenta Requerida para Comprar</h6>
+                <h6 class="modal-title fw-bold mb-0">Iniciar Sesión para Usar el Carrito</h6>
               </div>
               <button type="button" class="btn-close btn-close-white" (click)="carritoService.cerrarRequiereCuenta()" aria-label="Cerrar"></button>
             </div>
@@ -24,16 +24,16 @@ import { CarritoService } from '../../../core/services/carrito.service';
             <div class="modal-body p-4 text-center">
               <div class="mx-auto mb-3 d-flex align-items-center justify-content-center bg-danger-subtle text-danger rounded-circle shadow-sm"
                    style="width: 72px; height: 72px;">
-                <i class="bi bi-bag-check-fill fs-1"></i>
+                <i class="bi bi-cart-x-fill fs-1"></i>
               </div>
 
-              <h5 class="fw-bold text-dark mb-2">¡Casi listo para completar tu compra!</h5>
+              <h5 class="fw-bold text-dark mb-2">¡Inicia sesión para usar tu carrito!</h5>
               <p class="text-muted small mb-3">
-                Puedes explorar nuestro catálogo libremente, pero para finalizar tu compra y coordinar la entrega o boleta SUNAT, necesitas contar con una cuenta registrada.
+                Para usar el carrito de compras y realizar pedidos es necesario que inicies sesión o te registres con tu cuenta.
               </p>
-              <div class="alert alert-light border small text-muted text-start mb-4 py-2">
-                <i class="bi bi-info-circle-fill text-danger me-1"></i>
-                Tus productos seguirán guardados en tu carrito para que pagues al instante al iniciar sesión o registrarte.
+              <div class="alert alert-warning border-0 small text-dark text-start mb-4 py-2">
+                <i class="bi bi-exclamation-triangle-fill text-warning me-1"></i>
+                <strong>Atención:</strong> Para usar el carrito es necesario que inicie sesión o se registre.
               </div>
 
               <div class="d-grid gap-2">
